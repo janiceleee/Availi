@@ -1,9 +1,14 @@
-Install python library that implements discord api
+# Availi Discord Bot
+
+## Requirements
+- Python 3.9.5
+
+## Install Discord API from Python library
 `pip install -U discord.py`
 
-Bot commands
-`!add`
-`!delete`
-`!show`
-`!availi`
-`!help`
+## Bot Commands
+- `!add`
+- `!delete`
+- `!show`
+- `!availi`
+- `!help`
