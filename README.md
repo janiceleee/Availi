@@ -4,7 +4,7 @@
 - Python 3.9.5
 
 ## Install Discord API from Python library
-`pip install -U discord.py`
+- `pip install -U discord.py`
 
 ## Bot Commands
 - `!start`
