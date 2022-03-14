@@ -7,6 +7,7 @@
 `pip install -U discord.py`
 
 ## Bot Commands
+- `!start`
 - `!add`
 - `!delete`
 - `!show`
