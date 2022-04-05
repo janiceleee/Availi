@@ -1,8 +1,7 @@
 import os
 import discord
 from discord.ext import commands
-
-TOKEN = 'OTUyODMxMjk3NTczNzY5MjM2.Yi7vTA.OZnBwjovLtQrzxZOW7EN6wW68nw'
+from private.config import TOKEN
 
 # All bot commands starts with the '!' prefix
 bot = commands.Bot(command_prefix='!')
