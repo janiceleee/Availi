@@ -1,11 +1,23 @@
 import os
 import discord
+from datetime import datetime
 from discord.ext import commands
 from private.config import TOKEN
 
 # All bot commands starts with the '!' prefix
 bot = commands.Bot(command_prefix='!')
 
+# List of all users
+userList = []
+
+class AvailiUser:
+    def __init__(self, userID, available):
+        self.userID = userID
+        self.availableList = [available]
+
+    def addAvailability(self, available):
+        # Append new available time into list
+        self.availableList.append(available)
 
 @bot.event
 async def on_ready( ):
@@ -32,21 +44,47 @@ async def on_member_join(member):
         f'Hi {member.name}, welcome to my Discord server!'
     )
 
-@bot.command(name='add', help='Add available times')
-async def add_time(ctx, day, time):
-    response = 'Added timing'
+# !add Command
+@bot.command(name='add', help='Add available times using the format: \'dd mm yyyy hh min\'')
+async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int):
+    # Get current user's ID
+    userID = ctx.author.id
+
+    # Create datetime object
+    availableTime = datetime(year, month, day, hour, minute)
+
+    # If userList is not empty
+    if not(len(userList) == 0):
+        # Find existing user
+        #if userID in userList.userID:
+        if any(user.userID == userID for user in userList):
+            # Get the index of the userID in userList
+            index = 0 #FUNCTION: NEED TO LOOP LIST TO FIND INDEX
+            # Add available time to the user's object
+            userList[index].addAvailability(availableTime)
+
+    # Either userList is empty or user does not exist            
+    else:
+        # Create new user and add to the userList
+        user = AvailiUser(userID, availableTime)
+        userList.append(user)
+
+    response = 'Added timing: ' + str(availableTime) + ' UserID: ' + str(userID)
     await ctx.send(response)
 
+# !delete Command
 @bot.command(name='delete', help='Delete specific available times')
 async def add_time(ctx, day, time):
     response = 'Deleted timing'
     await ctx.send(response)	
 
+# !show Command
 @bot.command(name='show', help='Show user\'s available times')
 async def add_time(ctx):
     response = 'todo: show available time'
     await ctx.send(response)
 
+# !availi Command
 @bot.command(name='availi', help='Show available times')
 async def add_time(ctx):
     response = 'todo: show available time'
