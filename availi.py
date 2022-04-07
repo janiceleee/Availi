@@ -10,6 +10,7 @@ bot = commands.Bot(command_prefix='!')
 # List of all users
 userList = []
 
+# AvailiUser class to store the details of each individual user
 class AvailiUser:
     def __init__(self, userID, available):
         self.userID = userID
@@ -56,10 +57,18 @@ async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int)
     # If userList is not empty
     if not(len(userList) == 0):
         # Find existing user
-        #if userID in userList.userID:
+        #If userID in userList.userID:
         if any(user.userID == userID for user in userList):
-            # Get the index of the userID in userList
-            index = 0 #FUNCTION: NEED TO LOOP LIST TO FIND INDEX
+
+            # Loop through userList to find the index of the current user
+            for user in userList:
+                index = 0
+                # If userID matches current user, break out of loop
+                if(user.userID == userID):
+                    break
+                # Increment index if userID has not been found yet
+                index += 1
+
             # Add available time to the user's object
             userList[index].addAvailability(availableTime)
 
@@ -69,7 +78,8 @@ async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int)
         user = AvailiUser(userID, availableTime)
         userList.append(user)
 
-    response = 'Added timing: ' + str(availableTime) + ' UserID: ' + str(userID)
+    # Print to user that their timing has been added
+    response = 'Added timing: ' + availableTime.strftime("%d %B %Y  %H:%M") + ' UserID: ' + str(userID)
     await ctx.send(response)
 
 # !delete Command
