@@ -20,6 +20,19 @@ class AvailiUser:
         # Append new available time into list
         self.availableList.append(available)
 
+# Gets the current index of the current user from the userList
+def getUserIndex(userID):
+    # Loop through userList to find the index of the current user
+    for user in userList:
+        index = 0
+        # If userID matches current user, break out of loop
+        if(user.userID == userID):
+            break
+        # Increment index if userID has not been found yet
+        index += 1
+
+    return index
+
 @bot.event
 async def on_ready( ):
     print(f'{bot.user.name} has connected to Discord!')
@@ -60,14 +73,8 @@ async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int)
         #If userID in userList.userID:
         if any(user.userID == userID for user in userList):
 
-            # Loop through userList to find the index of the current user
-            for user in userList:
-                index = 0
-                # If userID matches current user, break out of loop
-                if(user.userID == userID):
-                    break
-                # Increment index if userID has not been found yet
-                index += 1
+            # Get the index of current user in userList
+            index = getUserIndex(userID)
 
             # Add available time to the user's object
             userList[index].addAvailability(availableTime)
