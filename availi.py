@@ -33,6 +33,7 @@ def getUserIndex(userID):
 
     return index
 
+# Deletes an available time from an individual user
 def deleteAvailableTime(deleteTime, index):
     # Loop through to list to delete time
     for time in userList[index].availableList:
@@ -48,7 +49,8 @@ async def on_ready( ):
     # Create an embed message with the !start command when bot joins server
     embed=discord.Embed(
     title="Availi Discord Bot",
-        color=discord.Color.blue())
+        color=discord.Color.red())
+    embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
     embed.add_field(name="`!start`", value="Sets up a new Availi channel", inline=False)
 
     # Retrieves the channel ID of 'general' channel
@@ -167,7 +169,8 @@ async def create_channel(ctx):
     # Create an embed message with the list of commands when new 'availi-channel' is created
     embed=discord.Embed(
     title="Availi Discord Bot",
-        color=discord.Color.blue())
+        color=discord.Color.red())
+    embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
     embed.add_field(name="`!add`", value="Add available times", inline=False)
     embed.add_field(name="`!delete`", value="Delete specific available times", inline=False)
     embed.add_field(name="`!show`", value="Show user's available times", inline=False)
