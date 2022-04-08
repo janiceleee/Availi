@@ -33,6 +33,14 @@ def getUserIndex(userID):
 
     return index
 
+def deleteAvailableTime(deleteTime, index):
+    # Loop through to list to delete time
+    for time in userList[index].availableList:
+        # If time to delete has been found
+        if(deleteTime == time):
+            # Remove available timing
+            userList[index].availableList.remove(deleteTime)
+
 @bot.event
 async def on_ready( ):
     print(f'{bot.user.name} has connected to Discord!')
@@ -58,7 +66,7 @@ async def on_member_join(member):
         f'Hi {member.name}, welcome to my Discord server!'
     )
 
-# !add Command
+# !add Command - Add available time for an individual user
 @bot.command(name='add', help='Add available times using the format: \'dd mm yyyy hh min\'')
 async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int):
     # Get current user's ID
@@ -70,7 +78,6 @@ async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int)
     # If userList is not empty
     if not(len(userList) == 0):
         # Find existing user
-        #If userID in userList.userID:
         if any(user.userID == userID for user in userList):
 
             # Get the index of current user in userList
@@ -87,28 +94,66 @@ async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int)
 
     # Print to user that their timing has been added
     response = 'Added timing: ' + availableTime.strftime("%d %B %Y  %H:%M") + ' UserID: ' + str(userID)
+    
+    # Send the response message to the channel
     await ctx.send(response)
 
-# !delete Command
-@bot.command(name='delete', help='Delete specific available times')
-async def add_time(ctx, day, time):
-    response = 'Deleted timing'
+# !delete Command - Delete a specific time from an individual user
+@bot.command(name='delete', help='Delete specific available times using the format: \'dd mm yyyy hh min\'')
+async def delete_time(ctx, day: int, month: int, year: int, hour: int, minute: int):
+    # Get current user's ID
+    userID = ctx.author.id
+
+    # Create datetime object
+    deleteTime = datetime(year, month, day, hour, minute)
+
+    # If userList is not empty
+    if not(len(userList) == 0):
+        # Find existing user
+        if any(user.userID == userID for user in userList):
+
+            # Get the index of current user in userList
+            index = getUserIndex(userID)
+
+            # Check if timing exists to delete
+            if any(time == deleteTime for time in userList[index].availableList):
+                
+                # Delete the time from the user's availableList
+                deleteAvailableTime(deleteTime, index)
+
+                # Print out a message to the user that the deletion was successful 
+                response = deleteTime.strftime("%d %B %Y  %H:%M") + ' has been deleted'
+            # Else, timing specfied was not found in the available times
+            else:
+                # Print out a message to the user that they have not enter that time previously
+                response = ctx.author.name + ' has not input specificed time before'
+
+    # Either userList is empty or user does not exist            
+    else:
+        # User does not exist in system, no time to delete
+        response = ctx.author.name + ' does not have any available timing stored in Availi'
+
+    # Send the response message to the channel
     await ctx.send(response)	
 
-# !show Command
+# !show Command - Show all available times for an individual user
 @bot.command(name='show', help='Show user\'s available times')
-async def add_time(ctx):
+async def show_time(ctx):
     response = 'todo: show available time'
+
+    # Send the response message to the channel
     await ctx.send(response)
 
-# !availi Command
+# !availi Command - Shows the combined available times for all users
 @bot.command(name='availi', help='Show available times')
-async def add_time(ctx):
+async def availi(ctx):
     response = 'todo: show available time'
+
+    # Send the response message to the channel
     await ctx.send(response)
 
-# Create a new channel when user inputs !start
-@bot.command(name='start', help='Sets up a new Availi-channel')
+# !start Command - Create a new 'Availi-Channel'
+@bot.command(name='start', help='Sets up a new Availi-Channel')
 async def create_channel(ctx):
     guild = ctx.message.guild
 
