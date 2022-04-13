@@ -1,4 +1,3 @@
-import os
 import discord
 from datetime import datetime
 from discord.ext import commands
@@ -7,7 +6,7 @@ from private.config import TOKEN
 # All bot commands starts with the '!' prefix
 bot = commands.Bot(command_prefix='!')
 
-# List of all users
+# List to store all users
 userList = []
 
 # AvailiUser class to store the details of each individual user
@@ -141,13 +140,42 @@ async def delete_time(ctx, day: int, month: int, year: int, hour: int, minute: i
 # !show Command - Show all available times for an individual user
 @bot.command(name='show', help='Show user\'s available times')
 async def show_time(ctx):
-    response = 'todo: show available time'
+    # Get current user's ID
+    userID = ctx.author.id
+
+    # If userList is not empty
+    if not(len(userList) == 0):
+        # Find existing user
+        if any(user.userID == userID for user in userList):
+
+            # Get the index of current user in userList
+            index = getUserIndex(userID)
+
+            # Check if user has existing available times 
+            if not(len(userList[index].availableList) == 0):
+
+                # Create a response string to store user's available timings to print 
+                response = '\n' + ctx.author.name +"\'s available timings are:\n"
+
+                # Loop through all available timings from user
+                for time in userList[index].availableList:
+                    response = response + time.strftime("%d %B %Y  %H:%M") + '\n'
+
+            # Else, no available times was found for specific user
+            else:
+                # Print out a message to the user that they have not enter any available times
+                response = ctx.author.name + ' does not have any available timings stored in Availi'
+
+    # Either userList is empty or user does not exist            
+    else:
+        # User does not exist in system, no timings to show
+        response = ctx.author.name + ' has not added any available timings in Availi' 
 
     # Send the response message to the channel
     await ctx.send(response)
 
 # !availi Command - Shows the combined available times for all users
-@bot.command(name='availi', help='Show available times')
+@bot.command(name='availi', help='Show everyone\'s available times')
 async def availi(ctx):
     response = 'todo: show available time'
 
