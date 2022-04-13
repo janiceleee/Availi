@@ -94,7 +94,7 @@ async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int)
         userList.append(user)
 
     # Print to user that their timing has been added
-    response = 'Added timing: ' + availableTime.strftime("%d %B %Y  %H:%M") + ' UserID: ' + str(userID)
+    response = 'Added timing: ' + availableTime.strftime("%d %B %Y  %H:%M")
     
     # Send the response message to the channel
     await ctx.send(response)
@@ -123,7 +123,7 @@ async def delete_time(ctx, day: int, month: int, year: int, hour: int, minute: i
                 deleteAvailableTime(deleteTime, index)
 
                 # Print out a message to the user that the deletion was successful 
-                response = deleteTime.strftime("%d %B %Y  %H:%M") + ' has been deleted'
+                response = 'Deleted timing: ' + deleteTime.strftime("%d %B %Y  %H:%M")
             # Else, timing specfied was not found in the available times
             else:
                 # Print out a message to the user that they have not enter that time previously
@@ -153,13 +153,16 @@ async def show_time(ctx):
 
             # Check if user has existing available times 
             if not(len(userList[index].availableList) == 0):
+                
+                # Sort the available timings in the user's available times
+                userTimes = sorted(userList[index].availableList)
 
                 # Create a response string to store user's available timings to print 
-                response = '\n' + ctx.author.name +"\'s available timings are:\n"
+                response = ctx.author.name +"\'s available timings are:\n"
 
                 # Loop through all available timings from user
-                for time in userList[index].availableList:
-                    response = response + time.strftime("%d %B %Y  %H:%M") + '\n'
+                for time in userTimes:
+                    response = response + time.strftime("%d %B %Y  %I:%M%p") + '\n'
 
             # Else, no available times was found for specific user
             else:
