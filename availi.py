@@ -193,10 +193,15 @@ async def availi(ctx):
 		
 		# Get a list of all times that intersect
 		available = sorted(list(set.intersection(*map(set, times))))
+
+		# Generate response
 		response = "Everyone's available time:\n"
 		for time in available:
 			response = response + time.strftime("%d %B %Y  %I:%M%p") + '\n'
-		response = response + "for "
+		response = response + "for | "
+
+		for user in userList:
+			response = response + user.username + " | "
 
 		await ctx.send(response)
 
