@@ -58,13 +58,17 @@ async def on_ready():
 
 # !add Command - Add available time for an individual user
 @bot.command(name='add', help='Add available times using the format: \'dd mm yyyy hh min\'')
-async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int):
+async def add_time(ctx, time):
     # Get current user's ID
     userID = ctx.author.id
     success = False
 
     # Create datetime object
-    availableTime = datetime(year, month, day, hour, minute)
+    try: 
+        availableTime = time.strftime("%d/%m/%Y %H:%M")
+    except ValueError:
+        response = "Please enter a valid time"
+        await ctx.send(response)
 
 	# Find existing user
     if any(user.userID == userID for user in userList):
@@ -226,6 +230,14 @@ async def create_channel(ctx):
     # Send message to 'availi-channel' channel
     channel = bot.get_channel(channel_id)
     await channel.send(embed=embed)
+
+# Error handling
+# todo required arguments, time value error 
+@bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, commands.BadArgument):
+		await ctx.channel.send("Please enter in the correct format")
+
 
 # Starts the bot with the Discord token
 bot.run(TOKEN)
