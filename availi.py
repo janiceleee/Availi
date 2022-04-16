@@ -22,19 +22,11 @@ class AvailiUser:
 
 # Gets the current index of the current user from the userList
 def getUserIndex(userID):
-    #index = 0
-
     # Loop through userList to find the index of the current user
     for index in range(len(userList)):
-        print(index, userList[index].userID)
         # If userID matches current user, break out of loop
         if(userList[index].userID == userID):
-            print(index)
             return index
-        # Increment index if userID has not been found yet
-        #index += 1
-
-    #return index
 
 # Deletes an available time from an individual user
 def deleteAvailableTime(deleteTime, index):
@@ -46,9 +38,9 @@ def deleteAvailableTime(deleteTime, index):
             userList[index].availableList.remove(deleteTime)
 
 @bot.event
-async def on_ready( ):
+async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
-
+    
     # Create an embed message with the !start command when bot joins server
     embed=discord.Embed(
     title="Availi Discord Bot",
@@ -64,42 +56,43 @@ async def on_ready( ):
     channel = bot.get_channel(channel_id)
     await channel.send(embed=embed)
 
-@bot.event
-async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'Hi {member.name}, welcome to my Discord server!'
-    )
-
 # !add Command - Add available time for an individual user
 @bot.command(name='add', help='Add available times using the format: \'dd mm yyyy hh min\'')
 async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int):
     # Get current user's ID
     userID = ctx.author.id
-    print(userID)
+    success = False
 
     # Create datetime object
     availableTime = datetime(year, month, day, hour, minute)
 
-    # If userList is not empty
-    #if not(len(userList) == 0):
 	# Find existing user
     if any(user.userID == userID for user in userList):
 
 		# Get the index of current user in userList
         index = getUserIndex(userID)
 
-		# Add available time to the user's object
-        userList[index].addAvailability(availableTime)
+        # Check if not a duplicate time
+        if availableTime not in userList[index].availableList:
+            # Add available time to the user's object
+            userList[index].addAvailability(availableTime)
+            # Added successfully
+            success = True
+        else:
+            response = ctx.author.name + ' has added this time before'
 
-	# Either userList is empty or user does not exist            
+	# Else if user does not exist            
     else:
 		# Create new user and add to the userList
         user = AvailiUser(userID, ctx.author.name, availableTime)
         userList.append(user)
+        # Added successfully
+        success = True
 
-    # Print to user that their timing has been added
-    response = 'Added timing: ' + availableTime.strftime("%d %B %Y  %H:%M")
+    # Print respinse to user when added time is successfull   
+    if success:
+        # Print to user that their timing has been added
+        response = 'Added timing: ' + availableTime.strftime("%d %B %Y  %H:%M")
     
     # Send the response message to the channel
     await ctx.send(response)
