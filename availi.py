@@ -11,8 +11,9 @@ userList = []
 
 # AvailiUser class to store the details of each individual user
 class AvailiUser:
-    def __init__(self, userID, available):
+    def __init__(self, userID, username, available):
         self.userID = userID
+        self.username = username
         self.availableList = [available]
 
     def addAvailability(self, available):
@@ -94,7 +95,7 @@ async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int)
 	# Either userList is empty or user does not exist            
     else:
 		# Create new user and add to the userList
-        user = AvailiUser(userID, availableTime)
+        user = AvailiUser(userID, ctx.author.name, availableTime)
         userList.append(user)
 
     # Print to user that their timing has been added
