@@ -21,17 +21,19 @@ class AvailiUser:
 
 # Gets the current index of the current user from the userList
 def getUserIndex(userID):
-    index = int
+    #index = 0
 
     # Loop through userList to find the index of the current user
-    for user in userList:
+    for index in range(len(userList)):
+        print(index, userList[index].userID)
         # If userID matches current user, break out of loop
-        if(user.userID == userID):
-            break
+        if(userList[index].userID == userID):
+            print(index)
+            return index
         # Increment index if userID has not been found yet
-        index += 1
+        #index += 1
 
-    return index
+    #return index
 
 # Deletes an available time from an individual user
 def deleteAvailableTime(deleteTime, index):
@@ -73,24 +75,25 @@ async def on_member_join(member):
 async def add_time(ctx, day: int, month: int, year: int, hour: int, minute: int):
     # Get current user's ID
     userID = ctx.author.id
+    print(userID)
 
     # Create datetime object
     availableTime = datetime(year, month, day, hour, minute)
 
     # If userList is not empty
-    if not(len(userList) == 0):
-        # Find existing user
-        if any(user.userID == userID for user in userList):
+    #if not(len(userList) == 0):
+	# Find existing user
+    if any(user.userID == userID for user in userList):
 
-            # Get the index of current user in userList
-            index = getUserIndex(userID)
+		# Get the index of current user in userList
+        index = getUserIndex(userID)
 
-            # Add available time to the user's object
-            userList[index].addAvailability(availableTime)
+		# Add available time to the user's object
+        userList[index].addAvailability(availableTime)
 
-    # Either userList is empty or user does not exist            
+	# Either userList is empty or user does not exist            
     else:
-        # Create new user and add to the userList
+		# Create new user and add to the userList
         user = AvailiUser(userID, availableTime)
         userList.append(user)
 
@@ -181,10 +184,17 @@ async def show_time(ctx):
 # !availi Command - Shows the combined available times for all users
 @bot.command(name='availi', help='Show everyone\'s available times')
 async def availi(ctx):
-    response = 'todo: show available time'
+	if not(len(userList == 0)):
+		# Get a list of all available times list
+		times = []
+		for user in userList:
+			times.append(user.availableList)
+		
+		# Get a list of all times that intersect
+		available = set.intersection(*map(set, times))
+		await ctx.send(available)
 
-    # Send the response message to the channel
-    await ctx.send(response)
+
 
 # !start Command - Create a new 'Availi-Channel'
 @bot.command(name='start', help='Sets up a new Availi-Channel')
