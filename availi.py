@@ -217,8 +217,8 @@ async def show_time(ctx):
 # !availi Command - Shows the combined available times for all users
 @bot.command(name='availi', help='Show everyone\'s available times')
 async def availi(ctx):
-    # Updates all user's avaialable times
-    deletePassedTime()
+	# Updates all user's avaialable times
+	deletePassedTime()
 	if not(len(userList) == 0):
 		# Get a list of all available times list
 		times = []
