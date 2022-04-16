@@ -37,6 +37,14 @@ def deleteAvailableTime(deleteTime, index):
             # Remove available timing
             userList[index].availableList.remove(deleteTime)
 
+# Updates available times that has passed for all users
+def deletePassedTime():
+    now = datetime.now()
+    for user in userList:
+        for time in user.availableList:
+            if time < now:
+                user.availableList.remove(time)
+
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
@@ -62,6 +70,8 @@ async def add_time(ctx, *, time):
     # Get current user's ID
     userID = ctx.author.id
     success = False
+    # Updates all user's avaialable times
+    deletePassedTime()
 
     try: 
         # Format date object from the following format
@@ -116,6 +126,9 @@ async def add_time(ctx, *, time):
 async def delete_time(ctx, *, time):
     # Get current user's ID
     userID = ctx.author.id
+    # Updates all user's avaialable times
+    deletePassedTime()
+    
     try: 
         # Format date object from the following format
         formatData = "%d/%m/%Y %H:%M"
@@ -164,6 +177,8 @@ async def delete_time(ctx, *, time):
 async def show_time(ctx):
     # Get current user's ID
     userID = ctx.author.id
+    # Updates all user's avaialable times
+    deletePassedTime()
 
     # If userList is not empty
     if not(len(userList) == 0):
@@ -202,6 +217,8 @@ async def show_time(ctx):
 # !availi Command - Shows the combined available times for all users
 @bot.command(name='availi', help='Show everyone\'s available times')
 async def availi(ctx):
+    # Updates all user's avaialable times
+    deletePassedTime()
 	if not(len(userList) == 0):
 		# Get a list of all available times list
 		times = []
@@ -251,13 +268,11 @@ async def create_channel(ctx):
     channel = bot.get_channel(channel_id)
     await channel.send(embed=embed)
 
-# Error handling
-# todo required arguments, time value error 
+# Error handling when user fails to input a time 
 @bot.event
 async def on_command_error(ctx, error):
-	if isinstance(error, commands.BadArgument):
-		await ctx.channel.send("Please enter in the correct format")
-
+	if isinstance(error, commands.MissingRequiredArgument):
+		await ctx.channel.send("Please enter a time")
 
 # Starts the bot with the Discord token
 bot.run(TOKEN)
