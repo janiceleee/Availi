@@ -57,49 +57,59 @@ async def on_ready():
     await channel.send(embed=embed)
 
 # !add Command - Add available time for an individual user
-@bot.command(name='add', help='Add available times using the format: \'dd mm yyyy hh min\'')
-async def add_time(ctx, time):
+@bot.command(name='add', help='Add available times using the format: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'')
+async def add_time(ctx, *, time):
     # Get current user's ID
     userID = ctx.author.id
     success = False
 
-    # Create datetime object
     try: 
-        availableTime = time.strftime("%d/%m/%Y %H:%M")
+        # Format date object from the following format
+        formatData = "%d/%m/%Y %H:%M"
+        # Create datetime object
+        availableTime = datetime.strptime(time, formatData)
+
+        # Check time is in 30 minute intervals
+        if not (availableTime.minute == 30 or availableTime.minute == 0):
+            response = "Please enter in 30 minute intervals"
+            await ctx.send(response)
+        else:
+            # Find existing user
+            if any(user.userID == userID for user in userList):
+
+                # Get the index of current user in userList
+                index = getUserIndex(userID)
+
+                # Check if not a duplicate time
+                if availableTime not in userList[index].availableList:
+                    # Add available time to the user's object
+                    userList[index].addAvailability(availableTime)
+                    # Added successfully
+                    success = True
+                else:
+                    response = ctx.author.name + ' has added this time before'
+
+            # Else if user does not exist            
+            else:
+                # Create new user and add to the userList
+                user = AvailiUser(userID, ctx.author.name, availableTime)
+                userList.append(user)
+                # Added successfully
+                success = True
+
+            # Print respinse to user when added time is successfull   
+            if success:
+                # Print to user that their timing has been added
+                response = 'Added timing: ' + availableTime.strftime("%d %B %Y  %H:%M")
+            
+            # Send the response message to the channel
+            await ctx.send(response)
     except ValueError:
+        # Check time is in valid format
         response = "Please enter a valid time"
         await ctx.send(response)
 
-	# Find existing user
-    if any(user.userID == userID for user in userList):
-
-		# Get the index of current user in userList
-        index = getUserIndex(userID)
-
-        # Check if not a duplicate time
-        if availableTime not in userList[index].availableList:
-            # Add available time to the user's object
-            userList[index].addAvailability(availableTime)
-            # Added successfully
-            success = True
-        else:
-            response = ctx.author.name + ' has added this time before'
-
-	# Else if user does not exist            
-    else:
-		# Create new user and add to the userList
-        user = AvailiUser(userID, ctx.author.name, availableTime)
-        userList.append(user)
-        # Added successfully
-        success = True
-
-    # Print respinse to user when added time is successfull   
-    if success:
-        # Print to user that their timing has been added
-        response = 'Added timing: ' + availableTime.strftime("%d %B %Y  %H:%M")
-    
-    # Send the response message to the channel
-    await ctx.send(response)
+	
 
 # !delete Command - Delete a specific time from an individual user
 @bot.command(name='delete', help='Delete specific available times using the format: \'dd mm yyyy hh min\'')
