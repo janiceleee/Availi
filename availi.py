@@ -1,7 +1,7 @@
 import discord
 from datetime import datetime
 from discord.ext import commands
-from private.config import TOKEN
+from config import TOKEN
 
 # All bot commands starts with the '!' prefix
 bot = commands.Bot(command_prefix='!')
