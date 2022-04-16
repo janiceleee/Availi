@@ -21,9 +21,10 @@ class AvailiUser:
 
 # Gets the current index of the current user from the userList
 def getUserIndex(userID):
+    index = int
+
     # Loop through userList to find the index of the current user
     for user in userList:
-        index = 0
         # If userID matches current user, break out of loop
         if(user.userID == userID):
             break
