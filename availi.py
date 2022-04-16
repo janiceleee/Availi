@@ -184,15 +184,20 @@ async def show_time(ctx):
 # !availi Command - Shows the combined available times for all users
 @bot.command(name='availi', help='Show everyone\'s available times')
 async def availi(ctx):
-	if not(len(userList == 0)):
+	if not(len(userList) == 0):
 		# Get a list of all available times list
 		times = []
 		for user in userList:
 			times.append(user.availableList)
 		
 		# Get a list of all times that intersect
-		available = set.intersection(*map(set, times))
-		await ctx.send(available)
+		available = sorted(list(set.intersection(*map(set, times))))
+		response = "Everyone's available time:\n"
+		for time in available:
+			response = response + time.strftime("%d %B %Y  %I:%M%p") + '\n'
+		response = response + "for "
+
+		await ctx.send(response)
 
 
 
