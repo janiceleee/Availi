@@ -112,42 +112,52 @@ async def add_time(ctx, *, time):
 	
 
 # !delete Command - Delete a specific time from an individual user
-@bot.command(name='delete', help='Delete specific available times using the format: \'dd mm yyyy hh min\'')
-async def delete_time(ctx, day: int, month: int, year: int, hour: int, minute: int):
+@bot.command(name='delete', help='Delete specific available times using the format: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'')
+async def delete_time(ctx, *, time):
     # Get current user's ID
     userID = ctx.author.id
+    try: 
+        # Format date object from the following format
+        formatData = "%d/%m/%Y %H:%M"
+        # Create datetime object
+        deleteTime = datetime.strptime(time, formatData)
 
-    # Create datetime object
-    deleteTime = datetime(year, month, day, hour, minute)
+        # Check time is in 30 minute intervals
+        if not (deleteTime.minute == 30 or deleteTime.minute == 0):
+            response = "Please enter in 30 minute intervals"
+            await ctx.send(response)
 
-    # If userList is not empty
-    if not(len(userList) == 0):
-        # Find existing user
-        if any(user.userID == userID for user in userList):
+        # If userList is not empty
+        if not(len(userList) == 0):
+            # Find existing user
+            if any(user.userID == userID for user in userList):
 
-            # Get the index of current user in userList
-            index = getUserIndex(userID)
+                # Get the index of current user in userList
+                index = getUserIndex(userID)
 
-            # Check if timing exists to delete
-            if any(time == deleteTime for time in userList[index].availableList):
-                
-                # Delete the time from the user's availableList
-                deleteAvailableTime(deleteTime, index)
+                # Check if timing exists to delete
+                if any(time == deleteTime for time in userList[index].availableList):
+                    
+                    # Delete the time from the user's availableList
+                    deleteAvailableTime(deleteTime, index)
 
-                # Print out a message to the user that the deletion was successful 
-                response = 'Deleted timing: ' + deleteTime.strftime("%d %B %Y  %H:%M")
-            # Else, timing specfied was not found in the available times
-            else:
-                # Print out a message to the user that they have not enter that time previously
-                response = ctx.author.name + ' has not input specificed time before'
+                    # Print out a message to the user that the deletion was successful 
+                    response = 'Deleted timing: ' + deleteTime.strftime("%d %B %Y  %H:%M")
+                # Else, timing specfied was not found in the available times
+                else:
+                    # Print out a message to the user that they have not enter that time previously
+                    response = ctx.author.name + ' has not input specificed time before'
 
-    # Either userList is empty or user does not exist            
-    else:
-        # User does not exist in system, no time to delete
-        response = ctx.author.name + ' does not have any available timing stored in Availi'
+        # Either userList is empty or user does not exist            
+        else:
+            # User does not exist in system, no time to delete
+            response = ctx.author.name + ' does not have any available timing stored in Availi'
 
-    # Send the response message to the channel
-    await ctx.send(response)	
+        # Send the response message to the channel
+        await ctx.send(response)
+    except ValueError:
+        response = "Please enter a valid time"
+        await ctx.send(response)	
 
 # !show Command - Show all available times for an individual user
 @bot.command(name='show', help='Show user\'s available times')
