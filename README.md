@@ -14,7 +14,7 @@
 
 - Name the bot Availi and select `Create`.
 
-![CreateApplication](https://user-images.githubusercontent.com/33518649/169500051-6e64cd03-6c82-49b4-9232-428017fbbaf5.png)
+![CreateApplication](https://user-images.githubusercontent.com/33518649/169505965-043afc44-d107-4b13-967a-04f824c8bef7.png)
 
 - Select `Bot` from the menu.
 
