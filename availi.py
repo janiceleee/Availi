@@ -65,7 +65,7 @@ async def on_ready():
     await channel.send(embed=embed)
 
 # !add Command - Add available time for an individual user
-@bot.command(name='add', help='Add available times using the format: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'')
+@bot.command(name='add', help='Add available times: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'')
 async def add_time(ctx, *, time):
     # Get current user's ID
     userID = ctx.author.id
@@ -122,7 +122,7 @@ async def add_time(ctx, *, time):
 	
 
 # !delete Command - Delete a specific time from an individual user
-@bot.command(name='delete', help='Delete specific available times using the format: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'')
+@bot.command(name='delete', help='Delete specific available times: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'')
 async def delete_time(ctx, *, time):
     # Get current user's ID
     userID = ctx.author.id
