@@ -16,6 +16,7 @@ class AvailiUser:
         self.username = username
         self.availableList = [available]
 
+    # Add an available time into the list
     def addAvailability(self, available):
         # Append new available time into list
         self.availableList.append(available)
@@ -42,6 +43,7 @@ def deletePassedTime():
     now = datetime.now()
     for user in userList:
         for time in user.availableList:
+            # Remove any available times that has passed
             if time < now:
                 user.availableList.remove(time)
 
@@ -57,7 +59,7 @@ async def on_ready():
     embed.add_field(name="`!start`", value="Sets up a new Availi channel", inline=False)
 
     # Retrieves the channel ID of 'general' channel
-    channel = discord.utils.get(bot.get_all_channels(), name='bot-spam') # Change this to general
+    channel = discord.utils.get(bot.get_all_channels(), name='general')
     channel_id = channel.id
 
     # Send message to 'general' channel 
@@ -168,6 +170,7 @@ async def delete_time(ctx, *, time):
 
         # Send the response message to the channel
         await ctx.send(response)
+    # Catch exception if user enters and invalid time
     except ValueError:
         response = "Please enter a valid time"
         await ctx.send(response)	
@@ -234,9 +237,11 @@ async def availi(ctx):
 			response = response + time.strftime("%d %B %Y  %I:%M%p") + '\n'
 		response = response + "for | "
 
+        # Get all users' names in the userList
 		for user in userList:
 			response = response + user.username + " | "
-
+        
+        # Send the response message to the channel
 		await ctx.send(response)
 
 
@@ -258,8 +263,8 @@ async def create_channel(ctx):
     title="Availi Discord Bot",
         color=discord.Color.red())
     embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
-    embed.add_field(name="`!add`", value="Add available times", inline=False)
-    embed.add_field(name="`!delete`", value="Delete specific available times", inline=False)
+    embed.add_field(name="`!add`", value="Add available times: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'", inline=False)
+    embed.add_field(name="`!delete`", value="Delete specific available times: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'", inline=False)
     embed.add_field(name="`!show`", value="Show user's available times", inline=False)
     embed.add_field(name="`!availi`", value="Show available times", inline=False)
     embed.add_field(name="`!help`", value="Show a list of commands", inline=False)
