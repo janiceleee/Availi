@@ -266,7 +266,7 @@ async def create_channel(ctx):
     embed.add_field(name="`!add`", value="Add available times: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'", inline=False)
     embed.add_field(name="`!delete`", value="Delete specific available times: \'dd/mm/yyyy hh:mm with only 30 mins intervals\'", inline=False)
     embed.add_field(name="`!show`", value="Show user's available times", inline=False)
-    embed.add_field(name="`!availi`", value="Show available times", inline=False)
+    embed.add_field(name="`!availi`", value="Show everybody's available times", inline=False)
     embed.add_field(name="`!help`", value="Show a list of commands", inline=False)
 
     # Send message to 'availi-channel' channel

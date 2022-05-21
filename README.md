@@ -54,4 +54,20 @@
 ![Invite](https://user-images.githubusercontent.com/33518649/169639587-c16667b1-e112-49e9-b256-c7d3f011304b.png)
 
 ## Bot Commands
-![Commands](https://user-images.githubusercontent.com/33518649/169494135-ce6a8976-9212-4f73-8dcc-20b382a66916.png)
+>`!start`
+>- Sets up a new Availi-Channel
+
+>`!add <time>`
+>- Add available times: 'dd/mm/yyyy hh:mm with only 30 mins intervals'
+
+>`!delete <time>`
+>- Delete specific available times: 'dd/mm/yyyy hh:mm with only 30 mins intervals'
+
+>`!show`
+>- Show user's available times
+
+>`!availi`
+>- Show everybody's available times
+
+>`!help`
+>- Show a list of commands
