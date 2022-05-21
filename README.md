@@ -24,7 +24,7 @@
 
 ![AddBot](https://user-images.githubusercontent.com/33518649/169500108-1c4f395c-bfc6-48a5-84a5-6b80335bbac7.png)
 
-- Select the `Click to Reveal Token` to reveal you Discord Token.
+- Select the `Click to Reveal Token` to reveal your Discord Token.
 
 ![TokenCode](https://user-images.githubusercontent.com/33518649/169500136-a7ac0447-763f-4570-8cfe-9da75447132f.png)
 
