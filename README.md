@@ -1,9 +1,4 @@
 # Availi Discord Bot
-Availi is an availability planner application that is fully integrated as a Discord bot. The program allows a group of people to find a common free time together. 
-
-## Authors
-- [Janice] (https://github.com/janiceleee)
-- [Jarod] (https://github.com/jarodlee88)
 
 ## Requirements
 - [Python 3.9.5](https://www.python.org/downloads/release/python-395/)

@@ -1,8 +1,3 @@
-"""
-Authors:
-Janice Wan Hsin Lee (632107)
-Jarod Zhi Cheng Lee (632106)
-"""
 import discord
 from datetime import datetime
 from discord.ext import commands
