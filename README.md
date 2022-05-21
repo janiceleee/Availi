@@ -37,7 +37,7 @@
 
 ![Token](https://user-images.githubusercontent.com/33518649/163662962-5ad6c072-f24c-4413-a8e0-bf10abe0c80a.png)
 
-## Invite Availi to server
+## Invite Availi to a Discord server
 - Head to the [Discord Developer Portal](https://discord.com/developers/applications) and select the created Availi application.
 - Select `URL Generator` from the `OAuth2` option in the `SETTINGS` tab.
 - Tick the `bot` checkbox in the `SCOPES` section.
