@@ -58,6 +58,14 @@ Availi is an availability planner application that is fully integrated as a Disc
 
 ![Invite](https://user-images.githubusercontent.com/33518649/169639587-c16667b1-e112-49e9-b256-c7d3f011304b.png)
 
+## Usage
+To start Availi
+```console
+$ python3 availi.py
+```
+
+Type `!start` into Discord once Availi has started to set up a new channel and start using Availi
+
 ## Bot Commands
 >`!start`
 >- Sets up a new Availi-Channel
